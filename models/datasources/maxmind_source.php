@@ -2,7 +2,7 @@
 
 $plugin = Inflector::camelize(basename(realpath(__FILE__ . '/../../..')));
 foreach (a('geoip', 'geoipregionvars', 'geoipcity') as $filename) {
-	App::import('Vendor', $plugin . '.cakephp_maxmind_' . r('/', '_', $filename), aa('file', 'vendors/' . $filename . '.php'));
+	App::import('Vendor', $plugin . '.cakephp_maxmind_' . r('/', '_', $filename), aa('file', 'vendors/maxmind/' . $filename . '.php'));
 }
 unset($plugin);
 
