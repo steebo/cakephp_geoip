@@ -1,6 +1,6 @@
 <?php
 
-class WorldipSource extends DataSource {
+class Webnet77Source extends DataSource {
 	
 	function __construct($config) {
 		$this->_path = realpath($config['path']);
@@ -36,10 +36,11 @@ class WorldipSource extends DataSource {
 		$result = a();
 		if ($fp = fopen($this->_path, 'r')) {
 			while (($csv = fgetcsv($fp, 8192)) !== false) {
-				list(, , $start, $end, $country_code, $country_name) = $csv;
+				if (substr($csv[0], 0, 1) == '#') continue;
+				list($start, $end, $registry, $assigned, $country_code, $country_code3, $country_name) = $csv;
 				if ($ip_number < $start) continue;
 				if ($ip_number > $end) continue;
-				$result = compact('ip', 'country_code', 'country_name');
+				$result = compact('ip', 'registry', 'assigned', 'country_code', 'country_code3', 'country_name');
 				ksort($result);
 				break;
 			}
