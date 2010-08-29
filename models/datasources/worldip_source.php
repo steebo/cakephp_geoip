@@ -1,12 +1,6 @@
 <?php
 
-$plugin = Inflector::camelize(basename(realpath(__FILE__ . '/../../..')));
-foreach (a('geoip', 'geoipregionvars', 'geoipcity') as $filename) {
-	App::import('Vendor', $plugin . '.cakephp_maxmind_' . r('/', '_', $filename), aa('file', 'vendors/' . $filename . '.php'));
-}
-unset($plugin);
-
-class GeoipSource extends DataSource {
+class WorldipSource extends DataSource {
 	
 	function __construct($config) {
 		$this->_path = realpath($config['path']);
@@ -29,17 +23,27 @@ class GeoipSource extends DataSource {
 		}
 	} 
 	
+	function _convert($ip) {
+		list($a, $b, $c, $d) = explode('.', $ip, 4);
+		return 16777216 * $a + 65536 * $b + 256 * $c + $d;
+	}
+	
 	function read($model, $queryData = array()) {
  		$ip = @$queryData['conditions']['ip'];
 		if (empty($ip)) $ip = $this->_currentIp();
+		$ip_number = $this->_convert($ip);
 		
-		$gi = geoip_open($this->_path, GEOIP_STANDARD); 
-        $result = (array)geoip_record_by_addr($gi, $ip);
-		$result['ip'] = $ip;
-		$result['country_code'] = geoip_country_code_by_addr($gi, $ip);
-		$result['country_name'] = geoip_country_name_by_addr($gi, $ip);
-		ksort($result);
-        geoip_close($gi);
+		$result = a();
+		if ($fp = fopen($this->_path, 'r')) {
+			while (($csv = fgetcsv($fp, 8192)) !== false) {
+				list(, , $start, $end, $country_code, $country_name) = $csv;
+				if ($ip_number < $start) continue;
+				if ($ip_number > $end) continue;
+				$result = compact('ip', 'country_code', 'country_name');
+				break;
+			}
+			fclose($fp);
+		}
 
 		return a(aa($model->name, $result));
 	}
