@@ -34,10 +34,14 @@ class MaxmindSource extends DataSource {
 		if (empty($ip)) $ip = $this->_currentIp();
 		
 		$gi = geoip_open($this->_path, GEOIP_STANDARD); 
-        $result = (array)geoip_record_by_addr($gi, $ip);
+		if ($gi->databaseType == GEOIP_CITY_EDITION_REV1) {
+			$result = (array)geoip_record_by_addr($gi, $ip);
+		} else {
+			$result = a();
+			$result['country_code'] = geoip_country_code_by_addr($gi, $ip);
+			$result['country_name'] = geoip_country_name_by_addr($gi, $ip);
+		}
 		$result['ip'] = $ip;
-		$result['country_code'] = geoip_country_code_by_addr($gi, $ip);
-		$result['country_name'] = geoip_country_name_by_addr($gi, $ip);
 		ksort($result);
         geoip_close($gi);
 
