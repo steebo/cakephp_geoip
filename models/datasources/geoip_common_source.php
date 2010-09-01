@@ -24,7 +24,9 @@ class GeoipCommonSource extends DataSource {
 	);
 	
 	function __construct($config) {
-		$this->_path = realpath($config['path']);
+		foreach ($config as $field => $value) {
+			$this->{'_' . $field} = $config[$field];
+		}
 	}
 	
 	function _createGeoipRecord() {
