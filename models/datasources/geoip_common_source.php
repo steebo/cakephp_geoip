@@ -3,24 +3,24 @@
 class GeoipCommonSource extends DataSource {
 	
 	var $_geoipSchema = array(
-		'city',
-		'country_code',
-		'ip',
-		'organization',
-		'state',
-		'tech_contact',
-		'country_code3',
-		'country_name',
-		'registry',
 		'area_code',
 		'city',
+		'city',
 		'continent_code',
+		'country_code',
+		'country_code3',
+		'country_name',
 		'dma_code',
+		'ip',
 		'latitude',
 		'longitude',
 		'metro_code',
+		'organization',
 		'postal_code',
 		'region',
+		'registry',
+		'state',
+		'tech_contact',
 	);
 	
 	function __construct($config) {
