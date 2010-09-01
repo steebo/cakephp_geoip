@@ -6,9 +6,8 @@ unset($plugin);
 
 class Webnet77Source extends GeoipCommonSource {
 	
-	function _readGeoip($model, $queryData = array()) {
- 		$ip = @$queryData['conditions']['ip'];
-		if (empty($ip)) $ip = $this->_currentIp();
+	function read($model, $queryData = array()) {
+		$ip = $this->_extractIp($model, $queryData);
 		$ip_number = $this->_convert($ip);
 		
 		$result = a();

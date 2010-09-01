@@ -37,10 +37,26 @@ class GeoipCommonSource extends DataSource {
 	}
 	
 	function listSources() {
-		return a('geoips', 'countries');
+		return a('geoips');
 	}
 	
 	function create($model, $fields = array(), $values = array()) {
+	}
+	
+	function _extractIp($model, $queryData) {
+ 		$ip = false;
+		foreach ((array)@$queryData['conditions'] as $field => $value) {
+			if (empty($value)) continue;
+			list($key, $field) = pluginSplit($field);
+			switch (true) {
+				case ($key == $model->name) && (low($field) == 'ip'):
+				case ($key == '') && (low($field) == 'ip'):
+					$ip = $value;
+			}
+			if ($ip) break;
+		}
+		if (empty($ip)) $ip = $this->_currentIp();
+		return $ip;
 	}
 	
 	function _currentIp() { 
@@ -57,17 +73,6 @@ class GeoipCommonSource extends DataSource {
 	}
 	
 	function read($model, $queryData = array()) {
-		switch ($model->table) {
-			case 'geoips': return $this->_readGeoip($model, $queryData);
-			case 'countries': return $this->_readCountry($model, $queryData);
-		}
-	}
-	
-	function _readGeoip($model, $queryData) {
-	}
-	
-	function _readCountry($model, $queryData) {
-		return a('test');
 	}
 	
 	function update($model, $fields = array(), $values = array()) {
