@@ -2,7 +2,7 @@
 
 class GeoipCommonSource extends DataSource {
 	
-	var $_geoipSchema = array(
+	var $schema = array(
 		'area_code',
 		'city',
 		'city',
@@ -11,16 +11,20 @@ class GeoipCommonSource extends DataSource {
 		'country_code3',
 		'country_name',
 		'dma_code',
+		'gmt_offset',
 		'ip',
+		'is_dst',
 		'latitude',
 		'longitude',
 		'metro_code',
 		'organization',
 		'postal_code',
 		'region',
+		'region_name',
 		'registry',
 		'state',
 		'tech_contact',
+		'timezone',
 	);
 	
 	function __construct($config) {
@@ -40,7 +44,7 @@ class GeoipCommonSource extends DataSource {
 	
 	function _createGeoipRecord() {
 		$record = a();
-		foreach ($this->_geoipSchema as $field) $record[$field] = false;
+		foreach ($this->schema as $field) $record[$field] = false;
 		return $record;
 	}
 	
@@ -92,7 +96,11 @@ class GeoipCommonSource extends DataSource {
 		$ip_number = $this->_convert($ip);
 		
 		if (($result = Cache::read($ip, sprintf('geoip_%s', $this->name))) === false) {
-			$result = am($this->_createGeoipRecord(), $this->selectByIp($this->config, $ip, $ip_number));
+			$result = $this->_createGeoipRecord();
+			foreach ($this->selectByIp($this->config, $ip, $ip_number) as $key => $value) {
+				if (isset($result[$key])) $result[$key] = $value;
+			}
+			ksort($result);
 			Cache::write($ip, $result, sprintf('geoip_%s', $this->name));
 		}
 

@@ -17,7 +17,6 @@ class WorldipSource extends GeoipCommonSource {
 				if ($ip_number < $start) continue;
 				if ($ip_number > $end) continue;
 				$result = compact('ip', 'country_code', 'country_name');
-				ksort($result);
 				break;
 			}
 			fclose($fp);

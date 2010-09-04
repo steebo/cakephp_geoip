@@ -25,7 +25,6 @@ class MaxmindSource extends GeoipCommonSource {
 			$result['country_name'] = geoip_country_name_by_addr($gi, $ip);
 		}
 		$result['ip'] = $ip;
-		ksort($result);
         geoip_close($gi);
 
 		return $result;
