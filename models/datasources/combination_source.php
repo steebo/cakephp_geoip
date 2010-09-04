@@ -6,23 +6,21 @@ unset($plugin);
 
 class CombinationSource extends GeoipCommonSource {
 	
-	function read($model, $queryData = array()) {
-		$result = $this->_createGeoipRecord();
+	function selectByIp($config, $ip, $ip_number) {
+		$result = a();
 		$plugin = Inflector::camelize(basename(realpath(__FILE__ . '/../../..')));
 		
-		foreach (array_reverse($this->_priority) as $source => $path) {
+		foreach (array_reverse($config['priority']) as $source => $config2) {
 			$clz = Inflector::camelize($source) . 'Source';
 			App::import('DataSource', $plugin . '.' . $clz);
-			$source = new $clz(a());
-			$source->_path = $path;
-			$r = array_shift($source->read($model, $queryData));
+			$source = new $clz($config2);
 			
-			foreach ($r[$model->name] as $key => $value) {
+			foreach ($source->selectByIp($config2, $ip, $ip_number) as $key => $value) {
 				if (!empty($value)) $result[$key] = $value;
 			}
 		}
 
-		return a(aa($model->name, $result));
+		return $result;
 	}
 	
 }

@@ -8,13 +8,9 @@ class WorldipApiSource extends GeoipCommonSource {
 	
 	var $endpoint = 'http://api.wipmania.com/%s?%s';
 	
-	function read($model, $queryData = array()) {
-		$ip = $this->_extractIp($model, $queryData);
-		
+	function selectByIp($config, $ip, $ip_number) {
 		$country_code = trim(file_get_contents(sprintf($this->endpoint, $ip, $_SERVER['HTTP_HOST'])));
-		$result = am($this->_createGeoipRecord(), compact('ip', 'country_code'));
-
-		return a(aa($model->name, $result));
+		return compact('ip', 'country_code');
 	}
 	
 }

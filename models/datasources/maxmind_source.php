@@ -9,12 +9,13 @@ unset($plugin);
 
 class MaxmindSource extends GeoipCommonSource {
 	
-	function read($model, $queryData = array()) {
-		$ip = $this->_extractIp($model, $queryData);
+	function selectByIp($config, $ip, $ip_number) {
+		if (trim(@$config['path']) == '') return a();
+		if (!file_exists(@$config['path'])) return a();
+
+		$gi = geoip_open($config['path'], GEOIP_STANDARD); 
 		
-		$gi = geoip_open($this->_path, GEOIP_STANDARD); 
-		
-		$result = $this->_createGeoipRecord();
+		$result = a();
 		if ($gi->databaseType == GEOIP_CITY_EDITION_REV1) {
 			foreach ((array)geoip_record_by_addr($gi, $ip) as $field => $value) {
 				$result[$field] = $value;
@@ -27,7 +28,7 @@ class MaxmindSource extends GeoipCommonSource {
 		ksort($result);
         geoip_close($gi);
 
-		return a(aa($model->name, $result));
+		return $result;
 	}
 	
 }

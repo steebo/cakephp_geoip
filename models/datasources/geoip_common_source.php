@@ -24,9 +24,18 @@ class GeoipCommonSource extends DataSource {
 	);
 	
 	function __construct($config) {
-		foreach ($config as $field => $value) {
-			$this->{'_' . $field} = $config[$field];
-		}
+		$this->config = $config;
+		$this->name = Inflector::underscore(r('Source', '', get_class($this)));
+		Cache::config(sprintf('geoip_%s', $this->name), $this->_cacheConfig('+6 months'));
+	}
+	
+	function _cacheConfig($default_cache_period) {
+		return aa(
+			'engine', 'File',  
+			'duration', isset($this->config['cache']) ? $this->config['cache'] : $default_cache_period,
+			'path', CACHE,
+			'prefix', sprintf('cake_geoip_%s_', $this->name)
+		);
 	}
 	
 	function _createGeoipRecord() {
@@ -67,14 +76,27 @@ class GeoipCommonSource extends DataSource {
 			case !empty($_SERVER['HTTP_X_FORWARDED_FOR']): return $_SERVER['HTTP_X_FORWARDED_FOR'];
 			default: return $_SERVER['REMOTE_ADDR'];
 		}
-	} 
+	}
 	
 	function _convert($ip) {
 		list($a, $b, $c, $d) = explode('.', $ip, 4);
 		return 16777216 * $a + 65536 * $b + 256 * $c + $d;
 	}
 	
+	function selectByIp($config, $ip, $ip_number) {
+		return a();
+	}
+	
 	function read($model, $queryData = array()) {
+		$ip = $this->_extractIp($model, $queryData);
+		$ip_number = $this->_convert($ip);
+		
+		if (($result = Cache::read($ip, sprintf('geoip_%s', $this->name))) === false) {
+			$result = am($this->_createGeoipRecord(), $this->selectByIp($this->config, $ip, $ip_number));
+			Cache::write($ip, $result, sprintf('geoip_%s', $this->name));
+		}
+
+		return a(aa($model->name, $result));
 	}
 	
 	function update($model, $fields = array(), $values = array()) {
