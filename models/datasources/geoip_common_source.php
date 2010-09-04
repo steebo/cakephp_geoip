@@ -5,7 +5,6 @@ class GeoipCommonSource extends DataSource {
 	var $schema = array(
 		'area_code',
 		'city',
-		'city',
 		'continent_code',
 		'country_code',
 		'country_code3',
