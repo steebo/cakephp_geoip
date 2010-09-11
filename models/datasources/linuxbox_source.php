@@ -1,6 +1,6 @@
 <?php
 
-$plugin = Inflector::camelize(basename(realpath(__FILE__ . '/../../..')));
+$plugin = Inflector::camelize(basename(realpath(dirname(__FILE__) . '/../..')));
 App::import('DataSource', $plugin . '.GeoipCommonSource');
 unset($plugin);
 

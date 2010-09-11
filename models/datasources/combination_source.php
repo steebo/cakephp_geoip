@@ -1,6 +1,6 @@
 <?php
 
-$plugin = Inflector::camelize(basename(realpath(__FILE__ . '/../../..')));
+$plugin = Inflector::camelize(basename(realpath(dirname(__FILE__) . '/../..')));
 App::import('DataSource', $plugin . '.GeoipCommonSource');
 unset($plugin);
 
@@ -8,7 +8,7 @@ class CombinationSource extends GeoipCommonSource {
 	
 	function selectByIp($config, $ip, $ip_number) {
 		$result = a();
-		$plugin = Inflector::camelize(basename(realpath(__FILE__ . '/../../..')));
+		$plugin = Inflector::camelize(basename(realpath(dirname(__FILE__) . '/../..')));
 		
 		foreach (array_reverse($config['priority']) as $source => $config2) {
 			$clz = Inflector::camelize($source) . 'Source';
