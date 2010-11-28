@@ -7,7 +7,7 @@ unset($plugin);
 class CombinationSource extends GeoipCommonSource {
 	
 	function selectByIp($config, $ip, $ip_number) {
-		$result = a();
+		$result = array();
 		$plugin = Inflector::camelize(basename(realpath(dirname(__FILE__) . '/../..')));
 		
 		foreach (array_reverse($config['priority']) as $source => $config2) {

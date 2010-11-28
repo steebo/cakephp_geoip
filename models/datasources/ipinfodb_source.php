@@ -14,9 +14,9 @@ class IpinfodbSource extends GeoipCommonSource {
 	}
 	
 	function selectByIp($config, $ip, $ip_number) {
-		$result = a();
+		$result = array();
 		foreach (json_decode(file_get_contents(sprintf($this->endpoint, $ip)), true) as $key => $value) {
-			$result[low($key)] = $value;
+			$result[strtolower($key)] = $value;
 		}
 		$this->_transkey($result, 'countrycode', 'country_code');
 		$this->_transkey($result, 'countryname', 'country_name');

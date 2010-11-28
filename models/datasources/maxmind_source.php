@@ -10,8 +10,8 @@ unset($plugin);
 class MaxmindSource extends GeoipCommonSource {
 	
 	function selectByIp($config, $ip, $ip_number) {
-		if (trim(@$config['path']) == '') return a();
-		if (!file_exists(@$config['path'])) return a();
+		if (trim(@$config['path']) == '') return array();
+		if (!file_exists(@$config['path'])) return array();
 
 		$gi = geoip_open($config['path'], GEOIP_STANDARD); 
 		

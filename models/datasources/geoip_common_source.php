@@ -28,21 +28,21 @@ class GeoipCommonSource extends DataSource {
 	
 	function __construct($config) {
 		$this->config = $config;
-		$this->name = Inflector::underscore(r('Source', '', get_class($this)));
+		$this->name = Inflector::underscore(str_replace('Source', '', get_class($this)));
 		Cache::config(sprintf('geoip_%s', $this->name), $this->_cacheConfig('+6 months'));
 	}
 	
 	function _cacheConfig($default_cache_period) {
-		return aa(
-			'engine', 'File',  
-			'duration', isset($this->config['cache']) ? $this->config['cache'] : $default_cache_period,
-			'path', CACHE,
-			'prefix', sprintf('cake_geoip_%s_', $this->name)
+		return array(
+			'engine' => 'File',  
+			'duration' => isset($this->config['cache']) ? $this->config['cache'] : $default_cache_period,
+			'path' => CACHE,
+			'prefix' => sprintf('cake_geoip_%s_', $this->name),
 		);
 	}
 	
 	function _createGeoipRecord() {
-		$record = a();
+		$record = array();
 		foreach ($this->schema as $field) $record[$field] = false;
 		return $record;
 	}
@@ -51,7 +51,7 @@ class GeoipCommonSource extends DataSource {
 	}
 	
 	function listSources() {
-		return a('geoips');
+		return array('geoips');
 	}
 	
 	function create($model, $fields = array(), $values = array()) {
@@ -63,8 +63,8 @@ class GeoipCommonSource extends DataSource {
 			if (empty($value)) continue;
 			list($key, $field) = pluginSplit($field);
 			switch (true) {
-				case ($key == $model->name) && (low($field) == 'ip'):
-				case ($key == '') && (low($field) == 'ip'):
+				case ($key == $model->name) && (strtolower($field) == 'ip'):
+				case ($key == '') && (strtolower($field) == 'ip'):
 					$ip = $value;
 			}
 			if ($ip) break;
@@ -87,7 +87,7 @@ class GeoipCommonSource extends DataSource {
 	}
 	
 	function selectByIp($config, $ip, $ip_number) {
-		return a();
+		return array();
 	}
 	
 	function read($model, $queryData = array()) {
@@ -103,7 +103,7 @@ class GeoipCommonSource extends DataSource {
 			Cache::write($ip, $result, sprintf('geoip_%s', $this->name));
 		}
 
-		return a(aa($model->name, $result));
+		return array(array($model->name => $result));
 	}
 	
 	function update($model, $fields = array(), $values = array()) {

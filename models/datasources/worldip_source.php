@@ -7,10 +7,10 @@ unset($plugin);
 class WorldipSource extends GeoipCommonSource {
 	
 	function selectByIp($config, $ip, $ip_number) {
-		if (trim(@$config['path']) == '') return a();
-		if (!file_exists(@$config['path'])) return a();
+		if (trim(@$config['path']) == '') return array();
+		if (!file_exists(@$config['path'])) return array();
 
-		$result = a();
+		$result = array();
 		if ($fp = fopen($config['path'], 'r')) {
 			while (($csv = fgetcsv($fp, 8192)) !== false) {
 				list(, , $start, $end, $country_code, $country_name) = $csv;
