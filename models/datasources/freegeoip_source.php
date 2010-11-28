@@ -25,4 +25,3 @@ class FreegeoipSource extends GeoipCommonSource {
 	
 }
 
-?>

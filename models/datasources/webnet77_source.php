@@ -27,4 +27,3 @@ class Webnet77Source extends GeoipCommonSource {
 	
 }
 
-?>

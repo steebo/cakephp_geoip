@@ -26,4 +26,3 @@ class LinuxboxSource extends GeoipCommonSource {
 	
 }
 
-?>

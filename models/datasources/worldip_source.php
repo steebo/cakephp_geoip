@@ -26,4 +26,3 @@ class WorldipSource extends GeoipCommonSource {
 	
 }
 
-?>

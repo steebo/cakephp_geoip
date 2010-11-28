@@ -114,4 +114,3 @@ class GeoipCommonSource extends DataSource {
 
 }
 
-?>

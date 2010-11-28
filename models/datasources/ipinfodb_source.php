@@ -31,4 +31,3 @@ class IpinfodbSource extends GeoipCommonSource {
 	
 }
 
-?>
