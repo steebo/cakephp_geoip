@@ -94,7 +94,8 @@ class GeoipCommonSource extends DataSource {
 		$ip = $this->_extractIp($model, $queryData);
 		$ip_number = $this->_convert($ip);
 		
-		if (($result = Cache::read($ip, sprintf('geoip_%s', $this->name))) === false) {
+		$result = Cache::read($ip, sprintf('geoip_%s', $this->name));
+		if (empty($result)) {
 			$result = $this->_createGeoipRecord();
 			foreach ($this->selectByIp($this->config, $ip, $ip_number) as $key => $value) {
 				if (isset($result[$key])) $result[$key] = $value;
