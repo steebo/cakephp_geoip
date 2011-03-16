@@ -2,7 +2,7 @@
 
 $plugin = Inflector::camelize(basename(realpath(dirname(__FILE__) . '/../..')));
 foreach (array('geoip', 'geoipregionvars', 'geoipcity') as $filename) {
-	App::import('Vendor', $plugin . '.cakephp_maxmind_' . r('/', '_', $filename), aa('file', 'vendors/maxmind/' . $filename . '.php'));
+	App::import('Vendor', $plugin . '.cakephp_maxmind_' . str_replace('/', '_', $filename), array('file' => 'vendors/maxmind/' . $filename . '.php'));
 }
 App::import('DataSource', $plugin . '.GeoipCommonSource');
 unset($plugin);
@@ -15,7 +15,7 @@ class MaxmindSource extends GeoipCommonSource {
 
 		$gi = geoip_open($config['path'], GEOIP_STANDARD); 
 		
-		$result = a();
+		$result = array();
 		if ($gi->databaseType == GEOIP_CITY_EDITION_REV1) {
 			foreach ((array)geoip_record_by_addr($gi, $ip) as $field => $value) {
 				$result[$field] = $value;
