@@ -7,6 +7,7 @@
 1. LinuxBox UK - They have a geoip database based on whois records, you can downdload their database at <http://linuxbox.co.uk/ip-address-whois-database.php>
 1. Free GeoIP - This is a live data source, accessed through an API, you don't have to download anything, but feel free to checkout their website <http://freegeoip.appspot.com/>. I am not sure where they get their data from, but it looks like Maxmind data - but needs to be confirmed.
 1. IP Info DB - Live data source from <http://ipinfodb.com/ip_location_api.php>. They said the data is sponsored by ip2location and can be used personally. If you need to use the data commerically, please consider purchasing the ip2location products <http://www.ip2location.com/>
+1. ip2location (both lite and commerical databases) - A wrapper to the official API to interface with their binary database. Download the lite edition at <http://ipinfodb.com/ip_database.php> or purchase the commerical edition at <http://www.ip2location.com/>. This data source should work for both versions.
 
 # How to Use?
 
