@@ -131,6 +131,7 @@ Controller Class:
 			pr($this->Geoip->find('first'));
 			pr($this->Geoip->find('first', array('conditions' => array('ip' => '74.125.45.100'))));
 			pr($this->Geoip->find('first', array('conditions' => array('Geoip.ip' => '74.125.45.100'))));
+			pr($this->Geoip->findByIp('74.125.45.100'));
 		}
 
 	}

@@ -112,6 +112,13 @@ class GeoipCommonSource extends DataSource {
 	
 	function delete($model, $id = null) {
 	}
+	
+	function query() {
+		$args = func_get_args();
+		$model = $args[2];
+		$results = $this->read($model, array('conditions' => array($model->name . '.ip' => $args[1][0])));
+		return preg_match('/^findBy/', $args[0]) ? array_shift($results) : $results;
+	}
 
 }
 
