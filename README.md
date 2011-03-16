@@ -80,6 +80,12 @@ And now, you can set up your database.php config to use one of the supported geo
 			'cache' => '+6 months',
 		);
 
+		var $geoip = array(
+			'datasource' => 'Geoip.ip2location',
+			'path' => '/full/path/to/the/database/file/IP2LOCATION-LITE-DB11.BIN',
+			'cache' => '+6 months',
+		);
+
 	}
 
 
