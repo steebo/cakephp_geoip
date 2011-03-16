@@ -1,7 +1,7 @@
 <?php
 
 $plugin = Inflector::camelize(basename(realpath(dirname(__FILE__) . '/../..')));
-foreach (a('geoip', 'geoipregionvars', 'geoipcity') as $filename) {
+foreach (array('geoip', 'geoipregionvars', 'geoipcity') as $filename) {
 	App::import('Vendor', $plugin . '.cakephp_maxmind_' . r('/', '_', $filename), aa('file', 'vendors/maxmind/' . $filename . '.php'));
 }
 App::import('DataSource', $plugin . '.GeoipCommonSource');
