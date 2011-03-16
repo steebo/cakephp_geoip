@@ -18,6 +18,13 @@ class Ip2locationSource extends GeoipCommonSource {
 		
 		$result = (array)$ip2location->getAll($ip);
 
+		$this->_transkey($result, 'countryShort', 'country_code');
+		$this->_transkey($result, 'countryLong', 'country_name');
+		$this->_transkey($result, 'isp', 'registry');
+		$this->_transkey($result, 'zipCode', 'postal_code');
+		$this->_transkey($result, 'timeZone', 'gmt_offset');
+		$this->_transkey($result, 'areaCode', 'area_code');
+		
 		$result['ip'] = $ip;
 
 		return $result;

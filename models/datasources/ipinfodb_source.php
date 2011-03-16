@@ -8,11 +8,6 @@ class IpinfodbSource extends GeoipCommonSource {
 	
 	var $endpoint = 'http://api.ipinfodb.com/v3/ip-city/?key=%s&ip=%s&format=json&timezone=true';
 	
-	function _transkey(&$result, $old_key, $new_key) {
-		$result[$new_key] = $result[$old_key];
-		unset($result[$old_key]);
-	}
-	
 	function selectByIp($config, $ip, $ip_number) {
 		$result = array();
 		foreach (json_decode(file_get_contents(sprintf($this->endpoint, $config['api_key'], $ip)), true) as $key => $value) {

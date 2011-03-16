@@ -86,6 +86,11 @@ class GeoipCommonSource extends DataSource {
 		return 16777216 * $a + 65536 * $b + 256 * $c + $d;
 	}
 	
+	function _transkey(&$result, $old_key, $new_key) {
+		$result[$new_key] = $result[$old_key];
+		unset($result[$old_key]);
+	}
+	
 	function selectByIp($config, $ip, $ip_number) {
 		return array();
 	}
